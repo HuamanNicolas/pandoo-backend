@@ -39,6 +39,17 @@ Mi rol es actuar como un especialista en desarrollo web con Java, utilizando mis
         *   Se actualizó el archivo `persistence.xml` para usar el JTA data source (`jdbc/pandoo`) proporcionado por GlassFish, permitiendo que el contenedor gestione las transacciones de la base de datos.
 
 *   **12 de noviembre de 2025:**
+    *   **Implementación de Inscripción a Cursos:**
+        *   Se crearon las entidades JPA para `Curso`, `Actividad` e `Inscripcion`, y se actualizaron las relaciones en la entidad `Usuario`.
+        *   Se implementaron los DAOs `CursoDAO` e `InscripcionDAO`.
+        *   Se crearon los servlets `InscripcionServlet` y `CursoServlet` para manejar la lógica de inscripción y visualización de cursos.
+        *   Se modificó el `dashboard.jsp` para mostrar cursos disponibles y cursos inscritos.
+        *   Se creó la vista `curso.jsp` para mostrar las actividades de un curso.
+    *   **Corrección de Error de Persistencia:** Se solucionó un `SQLException` al inscribir un curso, causado por la falta de un valor para `fechaInscripcion`. Se ajustó la entidad `Inscripcion` y el servlet correspondiente para manejar la fecha programáticamente.
+    *   **Corrección de Lógica de Inscripción:**
+        *   Se solucionó un error que permitía a un usuario inscribirse varias veces en el mismo curso. Se añadió un método `existeInscripcion` en el `InscripcionDAO` y se utilizó en el `InscripcionServlet` para validar antes de crear una nueva inscripción.
+        *   Se corrigió el error de login que ocurría por datos duplicados, modificando la consulta en `UsuarioDAO` para que devuelva resultados distintos (`SELECT DISTINCT`).
+        *   Se resolvió el problema de actualización del dashboard, que no mostraba los cursos recién inscritos. La solución fue inicializar la lista de inscripciones en la entidad `Usuario` y añadir manualmente la nueva inscripción al objeto `usuario` de la sesión, evitando una nueva consulta a la base de datos.
     *   **Implementación de Login/Registro:**
         *   Se creó la entidad JPA `Usuario.java` para mapear la tabla `User`.
         *   Se implementó el EJB `UsuarioDAO` para las operaciones de persistencia de usuarios.

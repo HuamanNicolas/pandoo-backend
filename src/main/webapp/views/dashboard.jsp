@@ -1,5 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="com.mycompany.pandoo.model.Usuario"%>
+<%@page import="com.mycompany.pandoo.model.Curso"%>
+<%@page import="com.mycompany.pandoo.model.Inscripcion"%>
+<%@page import="java.util.List"%>
+<%@page import="java.util.stream.Collectors"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,17 +28,59 @@
         <% 
             Usuario usuario = (Usuario) session.getAttribute("usuario");
             if (usuario != null) {
+                List<Curso> todosLosCursos = (List<Curso>) request.getAttribute("cursos");
+                List<Inscripcion> inscripciones = usuario.getInscripciones();
+                List<Integer> idsCursosInscritos = inscripciones.stream()
+                                                                .map(inscripcion -> inscripcion.getCurso().getId())
+                                                                .collect(Collectors.toList());
         %>
             <div class="alert alert-success" role="alert">
                 <h4 class="alert-heading">¡Bienvenido, <%= usuario.getNombre() %>!</h4>
                 <p>Has iniciado sesión correctamente.</p>
-                <hr>
-                <p class="mb-0">Tu nombre de usuario es: <strong><%= usuario.getUsername() %></strong></p>
             </div>
+
+            <hr>
+
+            <h3>Mis Cursos</h3>
+            <div class="row">
+                <% for (Curso curso : todosLosCursos) {
+                    if (idsCursosInscritos.contains(curso.getId())) { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= curso.getNombre() %></h5>
+                                    <a href="${pageContext.request.contextPath}/CursoServlet?action=view&id=<%= curso.getId() %>" class="btn btn-success">Ver Curso</a>
+                                </div>
+                            </div>
+                        </div>
+                <%  }
+                } %>
+            </div>
+
+            <hr>
+
+            <h3>Cursos Disponibles</h3>
+            <div class="row">
+                <% for (Curso curso : todosLosCursos) {
+                    if (!idsCursosInscritos.contains(curso.getId())) { %>
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title"><%= curso.getNombre() %></h5>
+                                    <form action="${pageContext.request.contextPath}/InscripcionServlet" method="post">
+                                        <input type="hidden" name="idCurso" value="<%= curso.getId() %>">
+                                        <button type="submit" class="btn btn-primary">Inscribirse</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                <%  }
+                } %>
+            </div>
+
         <% 
             } else {
-                // Si no hay usuario en la sesión, redirigir al login
-                response.sendRedirect(request.getContextPath() + "/index.jsp");
+                response.sendRedirect(request.getContextPath() + "/views/login.jsp");
             }
         %>
     </div>

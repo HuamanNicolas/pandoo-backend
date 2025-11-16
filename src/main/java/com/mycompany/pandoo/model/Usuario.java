@@ -9,6 +9,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
+import jakarta.persistence.OneToMany;
+import java.util.List;
+
 @Entity
 @Table(name = "User")
 public class Usuario implements Serializable {
@@ -35,10 +38,14 @@ public class Usuario implements Serializable {
     @Column(name = "created_at", insertable = false, updatable = false)
     private Timestamp createdAt;
 
+    @OneToMany(mappedBy = "usuario")
+    private List<Inscripcion> inscripciones = new java.util.ArrayList<>();
+
     // Getters and Setters
     public int getId() {
         return id;
     }
+
 
     public void setId(int id) {
         this.id = id;
@@ -82,5 +89,13 @@ public class Usuario implements Serializable {
 
     public void setCreatedAt(Timestamp createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Inscripcion> getInscripciones() {
+        return inscripciones;
+    }
+
+    public void setInscripciones(List<Inscripcion> inscripciones) {
+        this.inscripciones = inscripciones;
     }
 }

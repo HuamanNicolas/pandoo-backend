@@ -4,8 +4,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- -----------------------------------------------------
--- Schema mydb
+
 -- -----------------------------------------------------
 -- -----------------------------------------------------
 -- Schema bdpandoo
@@ -76,11 +75,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `bdpandoo`.`Actvidad`
+-- Table `bdpandoo`.`Actividad`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `bdpandoo`.`Actvidad` ;
+DROP TABLE IF EXISTS `bdpandoo`.`Actividad` ;
 
-CREATE TABLE IF NOT EXISTS `bdpandoo`.`Actvidad` (
+CREATE TABLE IF NOT EXISTS `bdpandoo`.`Actividad` (
   `idActividad` INT NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
   `orden` INT NOT NULL,
@@ -124,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `bdpandoo`.`Ejercicio` (
   INDEX `fk_Ejercicio_Tipo_ejercicio1_idx` (`Tipo_ejercicio_idTipo_ejercicio` ASC) VISIBLE,
   CONSTRAINT `fk_Actividad_Unidad1`
     FOREIGN KEY (`Unidad_idUnidad`)
-    REFERENCES `bdpandoo`.`Actvidad` (`idActividad`)
+    REFERENCES `bdpandoo`.`Actividad` (`idActividad`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Ejercicio_Tipo_ejercicio1`

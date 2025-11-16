@@ -1,6 +1,6 @@
 package com.mycompany.pandoo.servlets;
 
-import com.mycompany.pandoo.dao.UsuarioDAO;
+import com.mycompany.pandoo.facade.UsuarioFacade;
 import com.mycompany.pandoo.model.Usuario;
 import java.io.IOException;
 import jakarta.ejb.EJB;
@@ -15,7 +15,7 @@ import jakarta.servlet.http.HttpSession;
 public class LoginServlet extends HttpServlet {
 
     @EJB
-    private UsuarioDAO usuarioDAO;
+    private UsuarioFacade usuarioFacade;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -24,13 +24,13 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        Usuario usuario = usuarioDAO.buscarPorCredenciales(email, password);
+        Usuario usuario = usuarioFacade.buscarPorCredenciales(email, password);
 
         if (usuario != null) {
             // Iniciar sesión
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);
-            response.sendRedirect(request.getContextPath() + "/views/dashboard.jsp");
+            response.sendRedirect(request.getContextPath() + "/CursoServlet?action=list");
         } else {
             // Credenciales incorrectas
             response.sendRedirect(request.getContextPath() + "/index.jsp?error=1");

@@ -1,6 +1,6 @@
 package com.mycompany.pandoo.servlets;
 
-import com.mycompany.pandoo.dao.UsuarioDAO;
+import com.mycompany.pandoo.facade.UsuarioFacade;
 import com.mycompany.pandoo.model.Usuario;
 import java.io.IOException;
 import jakarta.ejb.EJB;
@@ -14,7 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class RegistroServlet extends HttpServlet {
 
     @EJB
-    private UsuarioDAO usuarioDAO;
+    private UsuarioFacade usuarioFacade;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -31,7 +31,7 @@ public class RegistroServlet extends HttpServlet {
         usuario.setEmail(email);
         usuario.setPassword(password); // En un caso real, se debería hashear la contraseña
 
-        usuarioDAO.crear(usuario);
+        usuarioFacade.create(usuario);
 
         // Redirigir al usuario a la página de inicio de sesión con un mensaje de éxito
         response.sendRedirect(request.getContextPath() + "/index.jsp?registro=exitoso");
