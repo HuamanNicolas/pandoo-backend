@@ -59,3 +59,23 @@ Mi rol es actuar como un especialista en desarrollo web con Java, utilizando mis
         *   Se revirtió `index.jsp` a su estado visual original, mostrando una imagen y texto de bienvenida.
         *   Se creó la vista `login.jsp` para alojar el formulario de inicio de sesión de forma separada.
         *   Se actualizaron los botones del navbar en `index.jsp` para redirigir a las páginas de login y registro.
+
+*   **15 de noviembre de 2025:**
+    *   **Refactorización de la Capa de Acceso a Datos:**
+        *   Se corrigió el patrón de diseño de la capa de persistencia, reemplazando el patrón DAO (Data Access Object) por el patrón `Abstract Facade`.
+        *   Se creó la clase genérica `AbstractFacade.java` en el nuevo paquete `com.mycompany.pandoo.facade`.
+        *   Se crearon las clases `UsuarioFacade`, `CursoFacade` e `InscripcionFacade` como EJBs `@Stateless` que heredan de `AbstractFacade`.
+        *   Se migraron las consultas personalizadas de los antiguos DAOs a los nuevos Facades.
+        *   Se actualizaron los servlets (`LoginServlet`, `RegistroServlet`, `CursoServlet`, `InscripcionServlet`) para inyectar y utilizar los nuevos Facades.
+        *   Se eliminaron los archivos `UsuarioDAO.java`, `CursoDAO.java` e `InscripcionDAO.java`, así como el paquete `dao`.
+    *   **Implementación de la Funcionalidad de Ejercicios:**
+        *   Se añadió la dependencia de Gson al `pom.xml` para el manejo de JSON.
+        *   Se creó la entidad JPA `Progreso.java` y se actualizó `Ejercicio.java` para incluir el campo `metadata` (JSON).
+        *   Se creó el `ProgresoFacade.java` para la persistencia del progreso.
+        *   Se implementó el `EjercicioServlet.java` para gestionar el flujo completo de los ejercicios (inicio, mostrar, comprobar respuesta, siguiente, resumen).
+        *   Se creó `ejercicio.jsp` para renderizar dinámicamente los ejercicios según su tipo (Multiple Choice, Completar texto, Unir con flechas).
+        *   Se creó `resumen.jsp` para mostrar el puntaje final del usuario y guardar el progreso de los ejercicios respondidos correctamente.
+        *   Se añadió un botón "Comenzar Ejercicios" en `actividad.jsp` para iniciar la secuencia de ejercicios.
+    *   **Temas Pendientes / Mejoras:**
+        *   La interfaz de usuario para los ejercicios de tipo "Unir con flechas" y "Completar texto" necesita ser mejorada para ofrecer una experiencia más intuitiva y coherente al usuario. Actualmente, el usuario debe "adivinar" el formato de la respuesta esperada.
+        *   Considerar una implementación más robusta para la validación de "Unir con flechas" que permita diferentes órdenes o formatos de entrada.

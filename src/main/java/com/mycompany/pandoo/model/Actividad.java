@@ -1,11 +1,15 @@
 package com.mycompany.pandoo.model;
 
 import java.io.Serializable;
+import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
@@ -27,6 +31,10 @@ public class Actividad implements Serializable {
     @ManyToOne
     @JoinColumn(name = "Curso_idCurso")
     private Curso curso;
+    
+    @OneToMany(mappedBy = "actividad", fetch = FetchType.EAGER)
+    @OrderBy("orden ASC")
+    private List<Ejercicio> ejercicios;
 
     // Getters and Setters
     public int getId() {
@@ -59,5 +67,13 @@ public class Actividad implements Serializable {
 
     public void setCurso(Curso curso) {
         this.curso = curso;
+    }
+    
+    public List<Ejercicio> getEjercicios() {
+        return ejercicios;
+    }
+
+    public void setEjercicios(List<Ejercicio> ejercicios) {
+        this.ejercicios = ejercicios;
     }
 }

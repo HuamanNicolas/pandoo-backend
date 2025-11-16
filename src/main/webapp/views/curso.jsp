@@ -1,7 +1,5 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="com.mycompany.pandoo.model.Curso"%>
-<%@page import="com.mycompany.pandoo.model.Actividad"%>
-<%@page import="java.util.List"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,28 +22,23 @@
         </div>
     </nav>
     <div class="container mt-5">
-        <% 
-            Curso curso = (Curso) request.getAttribute("curso");
-            if (curso != null) {
-                List<Actividad> actividades = curso.getActividades();
-        %>
-            <h2><%= curso.getNombre() %></h2>
+        <c:if test="${not empty curso}">
+            <h2>${curso.nombre}</h2>
             <p>A continuación se listan las actividades del curso.</p>
             
-            <ul class="list-group">
-                <% for (Actividad actividad : actividades) { %>
-                    <li class="list-group-item"><%= actividad.getNombre() %></li>
-                <% } %>
-            </ul>
-        <% 
-            } else {
-        %>
+            <div class="list-group">
+                <c:forEach var="actividad" items="${curso.actividades}">
+                    <a href="${pageContext.request.contextPath}/ActividadServlet?id=${actividad.id}" class="list-group-item list-group-item-action">
+                        ${actividad.nombre}
+                    </a>
+                </c:forEach>
+            </div>
+        </c:if>
+        <c:if test="${empty curso}">
             <div class="alert alert-danger" role="alert">
                 No se pudo cargar la información del curso.
             </div>
-        <%
-            }
-        %>
+        </c:if>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
