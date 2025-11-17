@@ -63,6 +63,7 @@ public class EjercicioServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         String action = request.getParameter("action");
         if ("check".equals(action)) {
             checkAnswer(request, response);
@@ -103,16 +104,30 @@ public class EjercicioServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/EjercicioServlet?action=summary");
             return;
         }
-
-        request.setAttribute("ejercicio", ejercicios.get(index));
+        
+        Ejercicio ejercicio = ejercicios.get(index);
+        request.setAttribute("ejercicio", ejercicio);
         request.setAttribute("ejercicioIndex", index);
         request.setAttribute("totalEjercicios", ejercicios.size());
 
         // Parse metadata for the view
-        String metadataJson = ejercicios.get(index).getMetadata();
+        String metadataJson = ejercicio.getMetadata();
         if (metadataJson != null && !metadataJson.isEmpty()) {
             Map<String, Object> metadata = gson.fromJson(metadataJson, Map.class);
             request.setAttribute("metadata", metadata);
+
+            // Si es un ejercicio de "Unir con flechas", preparamos las columnas desordenadas
+            if ("Unir con flechas".equals(ejercicio.getTipoEjercicio().getNombre())) {
+                Map<String, String> pares = (Map<String, String>) metadata.get("pares");
+                if (pares != null) {
+                    List<String> columna1 = new ArrayList<>(pares.keySet());
+                    List<String> columna2 = new ArrayList<>(pares.values());
+                    java.util.Collections.shuffle(columna1);
+                    java.util.Collections.shuffle(columna2);
+                    request.setAttribute("columna1", columna1);
+                    request.setAttribute("columna2", columna2);
+                }
+            }
         }
 
         request.getRequestDispatcher("/views/ejercicio.jsp").forward(request, response);
@@ -141,13 +156,42 @@ public class EjercicioServlet extends HttpServlet {
             isCorrect = userAnswer != null && userAnswer.equalsIgnoreCase(correctAnswer);
             request.setAttribute("userAnswer", userAnswer);
         } else if ("Unir con flechas".equals(tipo)) {
-            Map<String, String> pares = (Map<String, String>) metadata.get("pares");
-            isCorrect = true; // Assume correct until proven otherwise
-            for (Map.Entry<String, String> entry : pares.entrySet()) {
-                String userAnswer = request.getParameter("respuesta_" + entry.getKey().replace(" ", "_"));
-                if (userAnswer == null || !userAnswer.equalsIgnoreCase(entry.getValue())) {
+            String userAnswerJson = request.getParameter("respuestaUsuario");
+            Map<String, String> correctPairsMap = (Map<String, String>) metadata.get("pares");
+            isCorrect = false; // Default to false
+
+            if (userAnswerJson != null && !userAnswerJson.isEmpty() && correctPairsMap != null) {
+                try {
+                    List<List<String>> userPairs = gson.fromJson(userAnswerJson, new com.google.gson.reflect.TypeToken<List<List<String>>>() {}.getType());
+
+                    if (userPairs != null && userPairs.size() == correctPairsMap.size()) {
+                        
+                        // Canonicalize user's answer by converting to lowercase, sorting pairs internally, and then sorting the list of pairs
+                        List<String> canonicalUserPairs = userPairs.stream()
+                                .map(pair -> pair.stream()
+                                        .map(String::toLowerCase)
+                                        .sorted()
+                                        .collect(java.util.stream.Collectors.joining("|")))
+                                .sorted()
+                                .collect(java.util.stream.Collectors.toList());
+
+                        // Canonicalize correct answer in the same way
+                        List<String> canonicalCorrectPairs = correctPairsMap.entrySet().stream()
+                                .map(entry -> {
+                                    List<String> pair = new ArrayList<>();
+                                    pair.add(entry.getKey().toLowerCase());
+                                    pair.add(entry.getValue().toLowerCase());
+                                    java.util.Collections.sort(pair);
+                                    return pair.get(0) + "|" + pair.get(1);
+                                })
+                                .sorted()
+                                .collect(java.util.stream.Collectors.toList());
+                        
+                        isCorrect = canonicalUserPairs.equals(canonicalCorrectPairs);
+                    }
+                } catch (Exception e) {
+                    // JSON parsing error or other issues, isCorrect remains false
                     isCorrect = false;
-                    break;
                 }
             }
         }
@@ -162,6 +206,19 @@ public class EjercicioServlet extends HttpServlet {
         request.setAttribute("totalEjercicios", ejercicios.size());
         request.setAttribute("isAnswered", true);
         request.setAttribute("isCorrect", isCorrect);
+        
+        // Re-enviar las columnas para que la vista pueda renderizar el estado final
+        if ("Unir con flechas".equals(tipo)) {
+            Map<String, String> pares = (Map<String, String>) metadata.get("pares");
+            if (pares != null) {
+                List<String> columna1 = new ArrayList<>(pares.keySet());
+                List<String> columna2 = new ArrayList<>(pares.values());
+                java.util.Collections.shuffle(columna1);
+                java.util.Collections.shuffle(columna2);
+                request.setAttribute("columna1", columna1);
+                request.setAttribute("columna2", columna2);
+            }
+        }
         
         request.getRequestDispatcher("/views/ejercicio.jsp").forward(request, response);
     }
