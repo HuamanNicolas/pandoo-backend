@@ -327,8 +327,20 @@
                                         <img src="${pageContext.request.contextPath}/images/<%= curso.getImagen() %>" alt="<%= curso.getNombre() %>" style="width: 60px; height: 60px; object-fit: cover;">
                                     </div>
                                     <h5 class="course-title"><%= curso.getNombre() %></h5>
+                                    
+                                    <div class="mb-2">
+                                        <%
+                                            java.util.Map<Integer, Double> progressMap = (java.util.Map<Integer, Double>) request.getAttribute("courseProgressMap");
+                                            double progress = progressMap != null ? progressMap.getOrDefault(curso.getId(), 0.0) : 0.0;
+                                        %>
+                                        <div class="progress" style="height: 8px; background-color: rgba(255,255,255,0.1);">
+                                            <div class="progress-bar" role="progressbar" style="width: <%= progress %>%; background: linear-gradient(45deg, var(--electric-green), var(--accent-blue));" aria-valuenow="<%= progress %>" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <small class="text-white-50"><%= Math.round(progress) %>% completado</small>
+                                    </div>
+
                                     <a href="${pageContext.request.contextPath}/CursoServlet?action=view&id=<%= curso.getId() %>" 
-                                       class="btn btn-custom btn-enrolled">
+                                       class="btn btn-custom btn-enrolled mt-2">
                                         <i class="fas fa-play"></i> Continuar Curso
                                     </a>
                                 </div>

@@ -243,13 +243,15 @@ public class EjercicioServlet extends HttpServlet {
             return;
         }
 
-        // Guardar progreso
+        // Guardar progreso solo si no existe previamente
         for (Integer ejercicioId : respuestasCorrectasIds) {
-            Progreso p = new Progreso();
-            p.setUsuario(usuario);
-            p.setEjercicio(ejercicioFacade.find(ejercicioId));
-            p.setFecha(new Timestamp(System.currentTimeMillis()));
-            progresoFacade.create(p);
+            if (!progresoFacade.progresoExists(usuario.getId(), ejercicioId)) {
+                Progreso p = new Progreso();
+                p.setUsuario(usuario);
+                p.setEjercicio(ejercicioFacade.find(ejercicioId));
+                p.setFecha(new Timestamp(System.currentTimeMillis()));
+                progresoFacade.create(p);
+            }
         }
 
         request.setAttribute("score", respuestasCorrectasIds.size());
