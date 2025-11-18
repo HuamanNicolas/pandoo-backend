@@ -14,9 +14,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --electric-green: #00ff88;
+            --electric-green: #78c800ff;;
             --dark-blue: #0a1929;
-            --accent-blue: #00d4ff;
+            --accent-blue: #78c800ff;
             --gradient-start: #0a1929;
             --gradient-end: #132f4c;
         }
@@ -170,23 +170,14 @@
             position: relative;
         }
         
-        .course-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
+        
         
         .course-card:hover::before {
             left: 100%;
         }
         
         .course-card:hover {
-            transform: translateY(-10px);
+            
             border-color: var(--electric-green);
             box-shadow: 0 15px 40px rgba(0, 255, 136, 0.3);
         }
@@ -332,8 +323,8 @@
                             <div class="course-card">
                                 <span class="badge-enrolled"><i class="fas fa-check"></i> Inscrito</span>
                                 <div class="course-card-body">
-                                    <div class="course-icon">
-                                        <i class="fas fa-laptop-code"></i>
+                                    <div class="course-icon" style="padding: 0; overflow: hidden;">
+                                        <img src="${pageContext.request.contextPath}/images/<%= curso.getImagen() %>" alt="<%= curso.getNombre() %>" style="width: 60px; height: 60px; object-fit: cover;">
                                     </div>
                                     <h5 class="course-title"><%= curso.getNombre() %></h5>
                                     <a href="${pageContext.request.contextPath}/CursoServlet?action=view&id=<%= curso.getId() %>" 
@@ -372,8 +363,8 @@
                         <div class="col-md-4 mb-4">
                             <div class="course-card">
                                 <div class="course-card-body">
-                                    <div class="course-icon">
-                                        <i class="fas fa-code"></i>
+                                    <div class="course-icon" style="padding: 0; overflow: hidden;">
+                                        <img src="${pageContext.request.contextPath}/images/<%= curso.getImagen() %>" alt="<%= curso.getNombre() %>" style="width: 60px; height: 60px; object-fit: cover;">
                                     </div>
                                     <h5 class="course-title"><%= curso.getNombre() %></h5>
                                     <form action="${pageContext.request.contextPath}/InscripcionServlet" method="post">

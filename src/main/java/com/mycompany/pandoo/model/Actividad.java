@@ -33,7 +33,7 @@ public class Actividad implements Serializable {
     private Curso curso;
     
     @OneToMany(mappedBy = "actividad", fetch = FetchType.EAGER)
-    @OrderBy("orden ASC")
+    @OrderBy("id ASC")
     private List<Ejercicio> ejercicios;
 
     // Getters and Setters

@@ -79,3 +79,19 @@ Mi rol es actuar como un especialista en desarrollo web con Java, utilizando mis
     *   **Temas Pendientes / Mejoras:**
         *   La interfaz de usuario para los ejercicios de tipo "Unir con flechas" y "Completar texto" necesita ser mejorada para ofrecer una experiencia más intuitiva y coherente al usuario. Actualmente, el usuario debe "adivinar" el formato de la respuesta esperada.
         *   Considerar una implementación más robusta para la validación de "Unir con flechas" que permita diferentes órdenes o formatos de entrada.
+
+*   **16 de noviembre de 2025:**
+    *   **Mejora del Ejercicio "Unir con Flechas":**
+        *   Se reemplazó la implementación basada en campos de texto por una interfaz gráfica interactiva.
+        *   Se integró la librería de JavaScript `leader-line.min.js` para permitir a los usuarios dibujar líneas visualmente entre los pares de conceptos.
+        *   Se modificó `ejercicio.jsp` para renderizar dos columnas de elementos desordenados y se añadió el script para gestionar la interacción del usuario (selección, dibujo y borrado de líneas).
+        *   Se refactorizó `EjercicioServlet.java` para soportar la nueva lógica:
+            *   El método `showExercise` ahora prepara y desordena las dos columnas de elementos para la vista.
+            *   El método `checkAnswer` fue modificado para recibir la respuesta en formato JSON, "canonicalizar" los pares (para una comparación insensible al orden y a mayúsculas/minúsculas) y validarla.
+    *   **Corrección de Errores (Debugging):**
+        *   Se solucionó un error crítico de codificación de caracteres (UTF-8) que impedía la correcta validación de respuestas con tildes o caracteres especiales. Se solucionó añadiendo `request.setCharacterEncoding("UTF-8");` al servlet.
+        *   Se corrigió un error en el JavaScript de `ejercicio.jsp` que impedía el correcto funcionamiento del botón "Siguiente Ejercicio" tras comprobar una respuesta.
+    *   **Actualización Visual (por el usuario):**
+        *   El usuario ha actualizado y mejorado el diseño visual de las vistas `dashboard.jsp` y `curso.jsp`.
+    *   **Temas Pendientes / Mejoras:**
+        *   Mejorar la interfaz de usuario para el ejercicio de tipo "Completar texto" para que sea más intuitivo.

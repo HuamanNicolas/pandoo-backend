@@ -212,23 +212,13 @@
             gap: 1.5rem;
         }
         
-        .activity-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
+        
         
         .activity-card:hover::before {
             left: 100%;
         }
         
         .activity-card:hover {
-            transform: translateX(10px);
             border-color: var(--electric-green);
             box-shadow: 0 8px 30px rgba(0, 255, 136, 0.3);
         }
@@ -371,10 +361,11 @@
         <c:if test="${not empty curso}">
             <div class="course-header">
                 <div class="course-header-content">
-                    <div class="course-icon-large">
-                        <i class="fas fa-laptop-code"></i>
+                    
+                    <div class="course-icon-large" style="padding: 0; overflow: hidden;">
+                        <img src="${pageContext.request.contextPath}/images/${curso.imagen}" alt="${curso.nombre}" style="width: 80px; height: 80px; object-fit: cover;">
                     </div>
-                    <h2><i class="fas fa-book-open"></i> ${curso.nombre}</h2>
+                    <h2>${curso.nombre}</h2>
                     <p>Explora todas las actividades disponibles en este curso y avanza en tu aprendizaje</p>
                 </div>
             </div>
