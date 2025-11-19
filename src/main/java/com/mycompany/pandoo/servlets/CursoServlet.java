@@ -2,6 +2,9 @@ package com.mycompany.pandoo.servlets;
 
 import com.mycompany.pandoo.facade.CursoFacade;
 import com.mycompany.pandoo.model.Curso;
+import com.mycompany.pandoo.model.Usuario; // Importar Usuario
+import com.mycompany.pandoo.model.Progreso; // Importar Progreso
+import com.mycompany.pandoo.model.Actividad; // Importar Actividad
 import java.io.IOException;
 import java.util.List;
 import jakarta.ejb.EJB;
@@ -25,6 +28,7 @@ public class CursoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        Usuario usuario = (Usuario) request.getSession().getAttribute("usuario"); // Declarar una vez aquí
         String action = request.getParameter("action");
         if (action != null) {
             switch (action) {
@@ -32,13 +36,36 @@ public class CursoServlet extends HttpServlet {
                     int idCurso = Integer.parseInt(request.getParameter("id"));
                     Curso curso = cursoFacade.find(idCurso);
                     request.setAttribute("curso", curso);
+                    
+                    // Lógica para determinar el estado de completado de las actividades
+                    // 'usuario' ya está declarado
+                    if (usuario != null && curso != null) {
+                        java.util.List<Progreso> progresosUsuario = progresoFacade.findByUsuario(usuario);
+                        java.util.Set<Integer> completedExerciseIds = new java.util.HashSet<>();
+                        for (Progreso p : progresosUsuario) {
+                            completedExerciseIds.add(p.getEjercicio().getId());
+                        }
+
+                        java.util.Map<Integer, Boolean> activityCompletionStatus = new java.util.HashMap<>();
+                        for (Actividad actividad : curso.getActividades()) {
+                            if (actividad.getEjercicios() == null || actividad.getEjercicios().isEmpty()) {
+                                activityCompletionStatus.put(actividad.getId(), true); // Considerar completada si no tiene ejercicios
+                                continue;
+                            }
+                            boolean allCompleted = actividad.getEjercicios().stream()
+                                    .allMatch(ejercicio -> completedExerciseIds.contains(ejercicio.getId()));
+                            activityCompletionStatus.put(actividad.getId(), allCompleted);
+                        }
+                        request.setAttribute("activityCompletionStatus", activityCompletionStatus);
+                    }
+
                     request.getRequestDispatcher("/views/curso.jsp").forward(request, response);
                     break;
                 case "list":
                     List<Curso> cursos = cursoFacade.findAll();
                     request.setAttribute("cursos", cursos);
                     
-                    com.mycompany.pandoo.model.Usuario usuario = (com.mycompany.pandoo.model.Usuario) request.getSession().getAttribute("usuario");
+                    // 'usuario' ya está declarado
                     if (usuario != null) {
                         java.util.Map<Integer, Double> courseProgressMap = new java.util.HashMap<>();
                         

@@ -23,7 +23,7 @@
         }
         
         body {
-            background: #fff;
+            background: var(--dark-blue);
             min-height: 100vh;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff;
@@ -33,18 +33,7 @@
             flex-direction: column;
         }
         
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0,255,136,0.1) 0%, transparent 50%);
-            animation: pulse 15s ease-in-out infinite;
-            pointer-events: none;
-            z-index: 0;
-        }
+    
         
         @keyframes pulse {
             0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
@@ -131,10 +120,10 @@
         }
         
         .feature-section {
-            background: rgba(10, 25, 41, 0.9);
-            border: 2px solid rgba(0, 255, 136, 0.3);
+            background: var(--dark-blue);
+           
             border-radius: 25px;
-            box-shadow: 0 15px 50px rgba(0, 255, 136, 0.3);
+            
             padding: 50px;
             backdrop-filter: blur(15px);
             animation: fadeInUp 0.8s ease-out;
@@ -142,17 +131,7 @@
             overflow: hidden;
         }
         
-        .feature-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -20%;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(0, 212, 255, 0.1), transparent);
-            border-radius: 50%;
-            animation: float 6s ease-in-out infinite;
-        }
+      
         
         @keyframes float {
             0%, 100% { transform: translate(0, 0); }
@@ -325,11 +304,11 @@
                 <img src="${pageContext.request.contextPath}/images/Logo_pandoo.png" alt="Logo Pandoo" class="logo">
             </a>
             <div class="d-flex">
-                <a href="${pageContext.request.contextPath}/views/login.jsp" class="btn btn-outline-primary me-2">
-                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+                <a href="${pageContext.request.contextPath}/views/login.jsp" class="btn me-2">
+                     Iniciar Sesión
                 </a>
-                <a href="${pageContext.request.contextPath}/views/registro.jsp" class="btn btn-primary">
-                    <i class="fas fa-user-plus"></i> Registrarse
+                <a href="${pageContext.request.contextPath}/views/registro.jsp" class="btn ">
+                     Registrarse
                 </a>
             </div>
         </div>
@@ -342,29 +321,12 @@
             </div>
             <div class="col-md-6 content-wrapper">
                 <h2>
-                    <i class="fas fa-rocket"></i>
+                    
                     Bienvenido a Pandoo
                 </h2>
                 <p>Descubre una nueva forma de aprender tecnología. Pandoo es tu plataforma educativa de vanguardia que combina cursos interactivos, ejercicios prácticos y un sistema de seguimiento personalizado para maximizar tu aprendizaje en el mundo de la informática.</p>
                 <p>Nuestra metodología innovadora te permite avanzar a tu propio ritmo mientras desarrollas habilidades reales en programación, desarrollo web, bases de datos y mucho más. Con Pandoo, cada ejercicio es una oportunidad para crecer y cada curso es un paso hacia tu futuro profesional.</p>
-                
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <i class="fas fa-laptop-code"></i>
-                        <h5>Cursos Prácticos</h5>
-                        <p>Aprende haciendo con ejercicios reales</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-chart-line"></i>
-                        <h5>Progreso Medible</h5>
-                        <p>Sigue tu evolución en tiempo real</p>
-                    </div>
-                    <div class="feature-item">
-                        <i class="fas fa-certificate"></i>
-                        <h5>Certificación</h5>
-                        <p>Valida tus conocimientos</p>
-                    </div>
-                </div>
+            
                 
                 <div class="cta-section">
                     <a href="${pageContext.request.contextPath}/views/registro.jsp" class="btn btn-primary">

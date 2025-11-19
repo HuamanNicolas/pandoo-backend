@@ -95,3 +95,31 @@ Mi rol es actuar como un especialista en desarrollo web con Java, utilizando mis
         *   El usuario ha actualizado y mejorado el diseño visual de las vistas `dashboard.jsp` y `curso.jsp`.
     *   **Temas Pendientes / Mejoras:**
         *   Mejorar la interfaz de usuario para el ejercicio de tipo "Completar texto" para que sea más intuitivo.
+
+*   **18 de noviembre de 2025:**
+    *   **Generación de Datos de Prueba:**
+        *   Se generó el script `Contexto/insercion_ejercicios_adicionales.sql` para insertar al menos 5 ejercicios diversos por cada actividad existente, asegurando una mayor cantidad de contenido para pruebas.
+    *   **Corrección de Ordenamiento de Ejercicios:**
+        *   Se modificó la entidad `Actividad.java` para ordenar los ejercicios por `id` (`@OrderBy("id ASC")`) en lugar de `orden`, resolviendo un problema donde los nuevos ejercicios no aparecían consistentemente en la interfaz.
+    *   **Mejora del Ejercicio "Completar Texto":**
+        *   Se refactorizó `ejercicio.jsp` para transformar los ejercicios de "Completar texto" de un campo de entrada libre a un formato de selección múltiple (radio buttons), mejorando la experiencia del usuario.
+        *   Se creó el script `Contexto/actualizacion_completar_texto.sql` para actualizar los metadatos de los ejercicios existentes de tipo "Completar texto" al nuevo formato de opciones múltiples.
+    *   **Implementación de Barra de Progreso en Dashboard:**
+        *   Se añadió lógica a `CursoServlet.java` (acción `list`) para calcular el porcentaje de progreso de cada curso inscrito por el usuario.
+        *   Se modificó `dashboard.jsp` para mostrar una barra de progreso horizontal y el porcentaje de completado para cada curso en la sección "Mis Cursos".
+        *   **Corrección de Errores de Compilación:**
+            *   Se añadió el método `findByUsuario(Usuario usuario)` a `ProgresoFacade.java` para obtener los progresos de un usuario específico.
+            *   Se corrigió la llamada a `usuario.getProgresos()` en `CursoServlet.java` para usar `progresoFacade.findByUsuario(usuario)`.
+            *   Se añadieron las importaciones faltantes (`Usuario`, `Progreso`, `Actividad`) en `CursoServlet.java`.
+            *   Se resolvió el error de "variable already defined" en `CursoServlet.java` declarando la variable `usuario` una sola vez al inicio del método `doGet`.
+    *   **Corrección de Cálculo de Progreso Duplicado:**
+        *   Se modificó la lógica de cálculo de `ejerciciosCompletados` en `CursoServlet.java` para contar solo ejercicios *distintos* (`.map(...).distinct().count()`), solucionando el problema de porcentajes de progreso inflados (>100%).
+        *   Se añadió un método `progresoExists(int idUsuario, int idEjercicio)` a `ProgresoFacade.java` para verificar si un progreso ya existe.
+        *   Se modificó `EjercicioServlet.java` (método `showSummary`) para que solo cree un nuevo registro de `Progreso` si no existe previamente, evitando la inserción de duplicados.
+    *   **Indicador de Actividad Completada:**
+        *   Se añadió lógica a `CursoServlet.java` (acción `view`) para calcular el estado de completado de cada actividad de un curso.
+        *   Se modificó `curso.jsp` para mostrar una insignia de "Completado" junto al título de las actividades que el usuario ha finalizado por completo.
+    *   **Expansión Masiva de Contenido y Dificultad:**
+        *   Se creó el script `Contexto/insercion_masiva_actividades_ejercicios.sql` para añadir 3 nuevas actividades a cada curso y 5 ejercicios de "Completar texto" a cada una de ellas.
+        *   Se generó `Contexto/insercion_ejercicios_variados.sql` para añadir 6 ejercicios más (3 de opción múltiple y 3 de unir con flechas) a cada una de las actividades nuevas, diversificando el contenido.
+        *   Se creó `Contexto/actualizacion_unir_con_flechas.sql` para modificar todos los ejercicios de "Unir con flechas" existentes, aumentando el número de pares a 4 para incrementar su dificultad.

@@ -381,7 +381,14 @@
                             <i class="fas fa-file-code"></i>
                         </div>
                         <div class="activity-content">
-                            <h5 class="activity-title">${actividad.nombre}</h5>
+                            <h5 class="activity-title">
+                                ${actividad.nombre}
+                                <c:if test="${activityCompletionStatus[actividad.id]}">
+                                    <span class="badge rounded-pill bg-success ms-2" style="font-size: 0.7em; vertical-align: middle;">
+                                        <i class="fas fa-check"></i> Completado
+                                    </span>
+                                </c:if>
+                            </h5>
                         </div>
                         <div class="activity-arrow">
                             <i class="fas fa-chevron-right"></i>

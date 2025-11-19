@@ -237,6 +237,7 @@
             font-size: 1rem;
             cursor: pointer;
             margin-left: 0.5rem;
+            width:100%;
         }
         
         .form-control {

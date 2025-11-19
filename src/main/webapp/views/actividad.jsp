@@ -434,7 +434,16 @@
                 <h2><i class="fas fa-tasks"></i> ${actividad.nombre}</h2>
             </div>
         </div>
-        
+        <div class="action-buttons">
+            <c:if test="${not empty actividad.ejercicios}">
+                <a href="${pageContext.request.contextPath}/EjercicioServlet?action=start&idActividad=${actividad.id}" class="btn btn-primary">
+                    <i class="fas fa-play"></i> Comenzar Ejercicios
+                </a>
+            </c:if>
+            <a href="${pageContext.request.contextPath}/CursoServlet?action=view&id=${actividad.curso.id}" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Volver al Curso
+            </a>
+        </div>
         <c:if test="${not empty actividad.ejercicios}">
             <h3 class="section-title">
                 <i class="fas fa-list-ol"></i> Ejercicios Disponibles
@@ -466,16 +475,7 @@
             </div>
         </c:if>
         
-        <div class="action-buttons">
-            <c:if test="${not empty actividad.ejercicios}">
-                <a href="${pageContext.request.contextPath}/EjercicioServlet?action=start&idActividad=${actividad.id}" class="btn btn-primary">
-                    <i class="fas fa-play"></i> Comenzar Ejercicios
-                </a>
-            </c:if>
-            <a href="${pageContext.request.contextPath}/CursoServlet?action=view&id=${actividad.curso.id}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Volver al Curso
-            </a>
-        </div>
+        
     </div>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

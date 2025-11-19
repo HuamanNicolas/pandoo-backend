@@ -14,7 +14,7 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --electric-green: #78c800ff;;
+            --electric-green: #78c800ff;
             --dark-blue: #0a1929;
             --accent-blue: #78c800ff;
             --gradient-start: #0a1929;
@@ -191,14 +191,11 @@
         .course-icon {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, var(--electric-green), var(--accent-blue));
-            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 1rem;
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
         }
         
         .course-title {
@@ -209,6 +206,9 @@
             min-height: 60px;
         }
         
+        .course-icon img{
+            width: 30px;
+        }
         .btn-custom {
             background: linear-gradient(45deg, var(--electric-green), var(--accent-blue));
             border: none;
@@ -262,6 +262,16 @@
         hr {
             border-color: rgba(0, 255, 136, 0.2);
             margin: 2rem 0;
+        }
+        .btn{
+            background-color: transparent;
+            color:white;
+            border:solid 1px #78c800ff;
+        }
+        
+        .btn:hover{
+            background-color: #78c800ff;
+            color:black;
         }
         
         @media (max-width: 768px) {
@@ -321,9 +331,9 @@
                 %>
                         <div class="col-md-4 mb-4">
                             <div class="course-card">
-                                <span class="badge-enrolled"><i class="fas fa-check"></i> Inscrito</span>
+                                <span class="badge-enrolled"><i class="fas fa-check"></i> Inscripto</span>
                                 <div class="course-card-body">
-                                    <div class="course-icon" style="padding: 0; overflow: hidden;">
+                                    <div style="padding-bottom: 20px;">
                                         <img src="${pageContext.request.contextPath}/images/<%= curso.getImagen() %>" alt="<%= curso.getNombre() %>" style="width: 60px; height: 60px; object-fit: cover;">
                                     </div>
                                     <h5 class="course-title"><%= curso.getNombre() %></h5>
@@ -340,7 +350,7 @@
                                     </div>
 
                                     <a href="${pageContext.request.contextPath}/CursoServlet?action=view&id=<%= curso.getId() %>" 
-                                       class="btn btn-custom btn-enrolled mt-2">
+                                       class="btn mt-2">
                                         <i class="fas fa-play"></i> Continuar Curso
                                     </a>
                                 </div>
@@ -375,7 +385,7 @@
                         <div class="col-md-4 mb-4">
                             <div class="course-card">
                                 <div class="course-card-body">
-                                    <div class="course-icon" style="padding: 0; overflow: hidden;">
+                                    <div>
                                         <img src="${pageContext.request.contextPath}/images/<%= curso.getImagen() %>" alt="<%= curso.getNombre() %>" style="width: 60px; height: 60px; object-fit: cover;">
                                     </div>
                                     <h5 class="course-title"><%= curso.getNombre() %></h5>

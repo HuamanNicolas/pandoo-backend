@@ -87,16 +87,7 @@
             overflow: hidden;
         }
         
-        .card-header-custom::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 136, 0.1), transparent);
-            animation: rotate 10s linear infinite;
-        }
+     
         
         @keyframes rotate {
             from { transform: rotate(0deg); }
@@ -303,7 +294,7 @@
                 <div class="register-card">
                     <div class="card-header-custom">
                         <h3>
-                            <i class="fas fa-user-plus"></i>
+                           
                             Registro de Nuevo Usuario
                         </h3>
                     </div>
